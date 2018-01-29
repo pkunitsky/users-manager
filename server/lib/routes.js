@@ -1,28 +1,23 @@
-const {
-  getAll,
-  postOne,
-  getOne,
-  putOne,
-  deleteOne
-} = require('./controllers/users-controller')
+const UsersController = require('./controllers/users-controller')
+const UsersControllerPolicy = require('./policies/users-controller-policy')
 
 module.exports = app => {
   app.route('/api/users')
-    .get(getAll)
-    .post(postOne)
+    .get(UsersController.getUsers)
+    .post(
+      UsersControllerPolicy.postUser,
+      UsersController.postUser
+    )
 
   app.route('/api/users/:userID')
-    .get(getOne)
-    .put(putOne)
-    .delete(deleteOne)
+    .get(UsersController.getUser)
+    .put(UsersController.putUser)
+    .delete(UsersController.deleteUser)
+
+  app.route('/api/users/:userID/pdf')
+    .get(UsersController.getUserPdf)
 
   app.get('*', (req, res) => {
     res.sendFile('index.html')
   })
 }
-
-
-// myReadStream.pipe(res)
-// const base64Prefix = 'data:image/png;base64,'
-// const myReadStream = fs.createReadStream('./read/read.png', 'base64')
-// const imgPlaceholder = 'http://www.planystech.com/wp-content/uploads/2017/03/profile-placeholder.jpg'

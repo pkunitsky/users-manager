@@ -24,8 +24,8 @@
         </div>
         <div class="form-group">
           <label for="file">Upload user profile image</label>
-          <input type="file" :disabled="" accept="image/*" class="form-control-file" id="file" required @change="onFileChange">
-          <small class="form-text text-muted">Recommended formats &emdash; <b>png</b>, <b>jpg</b> and <b>jpeg</b> files</small>
+          <input type="file" accept="image/*" class="form-control-file" id="file" required @change="onFileChange">
+          <small class="form-text text-muted">Recommended file formats &mdash; <b>png</b>, <b>jpg</b> and <b>jpeg</b></small>
         </div>
         <div class="form-group">
           <button type="submit" class="btn btn-info" >
@@ -81,12 +81,12 @@
         lastName: null,
         job: null,
         about: null,
-        file: null,
       },
+      file: null,
       user: {
         fullName: null,
         job: null,
-        imgBase64: null,
+        img: null,
       },
       msg: {
         error: null,
@@ -105,17 +105,24 @@
     },
 
     methods: {
+      onFileChange (e) {
+        this.file = e.target.files[0]
+      },
+
       onSubmit () {
         this.requestPending = true
 
         UsersService
-          .postOne(this.newUser)
+          .postOne({
+            user: this.newUser,
+            file: this.file
+          })
           .then(res => {
             const {success, user} = res.data
 
             this.user.fullName = getFullName(user.firstName, user.lastName)
             this.user.job = user.job
-            // this.user.imgBase64 = 
+            this.user.img = user.img
 
             this.requestPending = false
             this.msg.success = success
@@ -130,10 +137,6 @@
               this.msg.error = err.toString()
             }
           })
-      },
-
-      onFileChange (e) {
-        this.user.file = e.target.files[0]
       }
     }
   }

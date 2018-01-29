@@ -2,5 +2,5 @@
 
 module.exports = {
   NODE_ENV: '"production"',
-  API: "window.location.origin + '/api'"
+  _API: "`${window.location.origin}/api`"
 }

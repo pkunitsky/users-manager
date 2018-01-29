@@ -6,7 +6,7 @@ const mongoose = require('mongoose')
 const config = require('./config')
 
 require('./models')
-require('./middlewares/global')(app)
+require('./middlewares')(app)
 require('./routes')(app)
 
 

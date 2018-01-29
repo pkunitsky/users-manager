@@ -16,7 +16,6 @@ const UserSchema = new mongoose.Schema({
   img: {
     type: Buffer,
     contentType: String,
-    required: true
   },
 
   pdf: {
