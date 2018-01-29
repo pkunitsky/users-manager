@@ -2,5 +2,6 @@
 
 module.exports = {
   NODE_ENV: '"production"',
-  _API: "`${window.location.origin}/api`"
+  /** todo */
+  // API: "REAL_HOST/api"
 }

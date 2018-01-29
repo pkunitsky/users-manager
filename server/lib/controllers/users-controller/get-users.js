@@ -5,7 +5,7 @@ module.exports = (req, res) => {
   User
     .find({})
     .then(users => {
-      res.json({users})
+      res.send(users)
     })
     .catch(err => {
       res.status(500).send({ error: err.toString() })

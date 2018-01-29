@@ -24,7 +24,7 @@
         </div>
         <div class="form-group">
           <label for="file">Upload user profile image</label>
-          <input type="file" accept="image/*" class="form-control-file" id="file" required @change="onFileChange">
+          <input type="file" name="file" accept="image/*" class="form-control-file" id="file" required @change="onFileChange">
           <small class="form-text text-muted">Recommended file formats &mdash; <b>png</b>, <b>jpg</b> and <b>jpeg</b></small>
         </div>
         <div class="form-group">
@@ -66,7 +66,9 @@
 </template>
 
 <script>
-  import UsersService from '@/services/users-service'
+  import axios from 'axios'
+
+  let formData = null
 
   function getFullName (firstName, lastName) {
     return firstName && lastName
@@ -82,7 +84,6 @@
         job: null,
         about: null,
       },
-      file: null,
       user: {
         fullName: null,
         job: null,
@@ -106,28 +107,43 @@
 
     methods: {
       onFileChange (e) {
-        this.file = e.target.files[0]
+        const fieldName = e.target.name
+        const fileList = e.target.files
+
+        if (fileList.length < 1) return
+        
+        formData = new FormData()
+        formData.append(fieldName, fileList[0], fileList[0].name)
       },
 
       onSubmit () {
         this.requestPending = true
 
-        UsersService
-          .postOne({
-            user: this.newUser,
-            file: this.file
+        for (let propName in this.newUser) {
+          formData.append(propName, this.newUser[propName])
+        }
+        
+        axios
+          .post(process.env.API+'/users', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data'
+            }
           })
           .then(res => {
-            const {success, user} = res.data
+            console.log(res)
+            // const {success, user} = res.data
 
-            this.user.fullName = getFullName(user.firstName, user.lastName)
-            this.user.job = user.job
-            this.user.img = user.img
+            // this.requestPending = false
+            // this.msg.success = success
 
-            this.requestPending = false
-            this.msg.success = success
-            Object.keys(this.newUser).forEach(key => this.newUser[key] = null)
-            document.querySelector('#file').value = null
+            // this.user.fullName = getFullName(user.firstName, user.lastName)
+            // this.user.job = user.job
+            // this.user.img = user.img
+
+            // this.$store.commit('addUser', user)
+
+            // Object.keys(this.newUser).forEach(key => this.newUser[key] = null)
+            // document.querySelector('#file').value = null
           })
           .catch(err => {
             this.requestPending = false

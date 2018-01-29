@@ -57,7 +57,7 @@
       }
     },
     created () {
-      this.$store.dispatch('getAll')
+      this.$store.dispatch('getUsers')
     }
   }
 </script>
