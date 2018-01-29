@@ -4,14 +4,14 @@ const {
   getOne,
   putOne,
   deleteOne
-} = require('./controllers/UsersController')
+} = require('./controllers/users-controller')
 
 module.exports = app => {
-  app.route('/users')
+  app.route('/api/users')
     .get(getAll)
     .post(postOne)
 
-  app.route('/users/:userID')
+  app.route('/api/users/:userID')
     .get(getOne)
     .put(putOne)
     .delete(deleteOne)

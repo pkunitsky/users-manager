@@ -16,6 +16,7 @@
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
     "vue-spinner": "^1.0.3",
+    "vue-visible": "^1.0.2",
     "vuex": "^3.0.1",
     "vuex-router-sync": "^5.0.0"
   },

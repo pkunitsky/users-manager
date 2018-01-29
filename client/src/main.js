@@ -6,6 +6,7 @@ import store from '@/store'
 import router from '@/router'
 
 import '@/plugins/vue-spinner'
+import '@/plugins/vue-visible'
 import '@/plugins/vuex-router-sync'
 
 import '@/assets/styles.css'

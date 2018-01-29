@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 const User = mongoose.model('User')
 
 module.exports = {
@@ -5,7 +6,7 @@ module.exports = {
     User
       .find({})
       .then(users => {
-        res.json(users)
+        res.json({users})
       })
       .catch(err => {
         res.send({ error: err.toString() })
@@ -14,6 +15,13 @@ module.exports = {
 
   postOne (req, res) {
     const newUser = new User(req.body.user)
+
+    /* test */
+    console.dir(req.body.user.file)
+    res.send({ success: 'alright boye', user: newUser })
+    return
+    /* test */
+
     newUser.save((err, user) => {
       if (err) {
         res.status(500).send({
@@ -22,7 +30,10 @@ module.exports = {
         return
       }
 
-      res.json(user)
+      res.status(201).json({
+        msg: 'User successfully added',
+        user
+      })
     })
   },
 
@@ -35,7 +46,7 @@ module.exports = {
         return
       }
 
-      res.json(user)
+      res.json({user})
     })
   },
 
@@ -52,7 +63,7 @@ module.exports = {
           return
         }
 
-        res.json(user)
+        res.json({user})
       }
     )
   },
@@ -67,7 +78,7 @@ module.exports = {
       }
 
       res.json({
-        msg: 'Successfuly deleted'
+        msg: 'User was deleted'
       })
     })
   }

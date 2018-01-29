@@ -13,9 +13,15 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  imgBase64: {
-    type: String,
+  img: {
+    type: Buffer,
+    contentType: String,
     required: true
+  },
+
+  pdf: {
+    type: Buffer,
+    contentType: String
   }
 })
 

@@ -1,4 +1,4 @@
-import axios from 'axios'
+import UsersService from '@/services/users-service'
 
 export default {
   async add ({ commit }, user) {
@@ -8,14 +8,20 @@ export default {
     })
     commit('add', res.data)
   },
-  async remove ({ commit }, user) {
-    await axios.delete(`https://user-api-pyskotofsb.now.sh/user/${user.id}`)
-    commit('remove', user)
-  },
-  async update ({ commit }, user) {
-    const res = await axios.patch(`https://user-api-pyskotofsb.now.sh/user/${user.id}`, {
-      completed: !user.completed
+
+  async getAll({ commit }) {
+    UsersService
+    .getAll()
+    .then(users => {
+      this.users = users.data
     })
-    commit('toggle', res.data)
+
+    try {
+      const res = await UsersService.getAll()
+      const {users} = res.data
+      commit('init', users)
+    } catch (err) {
+      console.log(err.toString())
+    }
   }
 }

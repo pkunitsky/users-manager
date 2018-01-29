@@ -1,3 +1,5 @@
 import axios from 'axios'
 
-export default axios.create(window.location.origin)
+export default axios.create({
+  baseURL: process.env.API
+})

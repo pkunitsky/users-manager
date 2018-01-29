@@ -34,7 +34,7 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
+  import UsersService from '@/services/users-service'
 
   export default {
     data: () => ({
@@ -43,15 +43,21 @@
         value: null,
         color: null
       },
-      requestPending: false
+      requestPending: false,
+      imgPlaceholder: 'http://www.planystech.com/wp-content/uploads/2017/03/profile-placeholder.jpg'
     }),
     computed: {
-      ...mapState(['users', 'imgPlaceholder'])
+      users () {
+        return this.$store.state.users
+      }
     },
     methods: {
       onSubmit () {
         console.log(this.searchTerm)
       }
+    },
+    created () {
+      this.$store.dispatch('getAll')
     }
   }
 </script>

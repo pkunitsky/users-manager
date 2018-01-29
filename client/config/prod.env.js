@@ -2,5 +2,5 @@
 
 module.exports = {
   NODE_ENV: '"production"',
-  DOMAIN: "'window.location.origin'"
+  API: "window.location.origin + '/api'"
 }
