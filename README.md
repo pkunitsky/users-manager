@@ -1,2 +1,5 @@
-1. request to `GET users/:userID/pdf` will parse binary to pdf and pipe to response
-2. request to `GET users/:userID/img` will parse binary to img and pipe to response
+## users-manager
+> full-stack application to manage users
+
+1. `npm install` or `yarn install`
+2. `npm start`

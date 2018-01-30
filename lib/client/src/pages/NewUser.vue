@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div class="col-md-6 col-lg-8">
+    <div class="col-md-6 col-lg-7">
       
       <form enctype="multipart/form-data" @submit.prevent="onSubmit">
         <div class="form-group">
@@ -37,11 +37,11 @@
     </div>
 
     <transition name="fade">
-      <div class="col-md-6 col-lg-4" v-if="fullName || msg.success">
-        <div class="card mb-4">
+      <div class="col-md-6 col-lg-5" v-if="fullName || msg.success">
+        <div class="card mb-4 mt-4 mt-md-0">
           <img class="card-img-top" id="img" :src="user.imgSrc">
           <div class="card-body">
-            <h5 class="card-title capitalize" v-visible="fullName">{{ fullName }}</h5>
+            <h5 class="card-title capitalize" v-visible="user.fullName">{{ user.fullName }}</h5>
             <small class="text-muted" v-visible="user.job">{{ user.job || 'default' }}</small>
           </div>
         </div>
@@ -100,7 +100,7 @@
       },
 
       fullName () {
-        const {firstName, lastName} = this.newUser
+        const {firstName, lastName} = this.user
         return firstName && lastName
           ? firstName+' '+lastName
           : null
@@ -139,6 +139,7 @@
 
             this.user.job = user.job
             this.user.imgSrc = `${process.env.API}/users/${user._id}/img`
+            this.user.fullName = user.firstName+' '+user.lastName
 
             this.$store.commit('addUser', user)
 

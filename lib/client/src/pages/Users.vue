@@ -10,15 +10,15 @@
     </form>
 
     <div class="grid" v-if="users.length !== 0">
-      <div class="grid__item" v-for="user in filteredUsers" :key="user._id">
-        <div class="card">
-          <img class="card-img-top" :src="API+`/users/${user._id}/img`">
+      <div class="grid__item" v-for="_user in users" :key="_user._id">
+        <div class="card mt-4 mt-md-0">
+          <img class="card-img-top" :src="API+`/users/${_user._id}/img`">
           <div class="card-body">
-            <h5 class="card-title capitalize">{{ user.firstName+' '+user.lastName }}</h5>
-            <small class="text-muted">{{ user.job }}</small>
-            <div class="card-text">
-              <a class="text-danger" href="#" @click.prevent="deleteUser(user._id)">delete</a>
-              <a href="#" target="_blank" :href="API+`/users/${user._id}/pdf`"><small>click to view pdf</small></a>
+            <h5 class="card-title capitalize">{{ _user.firstName+' '+_user.lastName }}</h5>
+            <small class="text-muted">{{ _user.job }}</small>
+            <div class="card-text mt-2">
+              <a class="text-danger" href="#" @click.prevent="deleteUser(_user._id)">delete</a>
+              <a href="#" target="_blank" :href="API+`/users/${_user._id}/pdf`"><small>click to view pdf</small></a>
             </div>
           </div>
         </div>
@@ -43,11 +43,16 @@
       msg: null,
       requestPending: false,
       API: process.env.API,
-      filteredUsers: []
     }),
     computed: {
       users () {
-        return this.$store.state.users
+        const v = this.searchTerm
+        if (!v) return this.$store.state.users
+
+        return this.$store.state.users.filter(u => {
+          const fullName = (u.firstName+' '+u.lastName).toLowerCase()
+          return fullName.indexOf(v.toLowerCase()) !== -1
+        })
       }
     },
     watch: {
@@ -65,29 +70,26 @@
       '$route.query.search': {
         immediate: true,
         handler (v) {
-          if (!v) {
-            this.filteredUsers = this.users
-            return
-          }
+          if (!v) return
+
           this.searchTerm = v
-          this.filteredUsers = this.users.filter(u => {
-            const fullName = (u.firstName+' '+u.lastName).toLowerCase()
-            return fullName.indexOf(v.toLowerCase()) !== -1
-          })
         }
       }
     },
     methods: {
+      deleteUser (userID) {
+        this.$store.commit('deleteUser', userID)
+        this.getUsers()
+      },
       ...mapActions([
         'getUsers', 'deleteUser'
       ]),
       onSubmit () {
-        console.log(this.searchTerm)
+        /* under development */
       }
     },
-    async created () {
-      await this.getUsers()
-      this.filteredUsers = this.users
+    created () {
+      this.getUsers()
     }
   }
 </script>
