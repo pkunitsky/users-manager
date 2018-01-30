@@ -10,7 +10,7 @@
     </form>
 
     <div class="grid" v-if="users.length !== 0">
-      <div class="grid__item" v-for="user in users" :key="user._id">
+      <div class="grid__item" v-for="user in filteredUsers" :key="user._id">
         <div class="card">
           <img class="card-img-top" :src="API+`/users/${user._id}/img`">
           <div class="card-body">
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+  import _ from 'lodash'
   import {mapActions} from 'vuex'
 
   export default {
@@ -41,11 +42,39 @@
       searchTerm: null,
       msg: null,
       requestPending: false,
-      API: process.env.API
+      API: process.env.API,
+      filteredUsers: []
     }),
     computed: {
       users () {
         return this.$store.state.users
+      }
+    },
+    watch: {
+      searchTerm: _.debounce(async function (value) {
+        const route = {
+          path: '/users'
+        }
+        if (this.searchTerm !== '') {
+          route.query = {
+            search: this.searchTerm
+          }
+        }
+        this.$router.push(route)
+      }, 0),
+      '$route.query.search': {
+        immediate: true,
+        handler (v) {
+          if (!v) {
+            this.filteredUsers = this.users
+            return
+          }
+          this.searchTerm = v
+          this.filteredUsers = this.users.filter(u => {
+            const fullName = (u.firstName+' '+u.lastName).toLowerCase()
+            return fullName.indexOf(v.toLowerCase()) !== -1
+          })
+        }
       }
     },
     methods: {
@@ -56,8 +85,9 @@
         console.log(this.searchTerm)
       }
     },
-    created () {
-      this.getUsers()
+    async created () {
+      await this.getUsers()
+      this.filteredUsers = this.users
     }
   }
 </script>
