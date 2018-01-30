@@ -18,7 +18,7 @@
             <small class="text-muted">{{ user.job }}</small>
             <div class="card-text">
               <a class="text-danger" href="#" @click.prevent="deleteUser(user._id)">delete</a>
-              <a href="#" target="_blank"><small>click to view pdf</small></a>
+              <a href="#" target="_blank" :href="API+`/users/${user._id}/pdf`"><small>click to view pdf</small></a>
             </div>
           </div>
         </div>

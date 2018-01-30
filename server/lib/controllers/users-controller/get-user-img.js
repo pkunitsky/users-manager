@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
-const defaultBase64 = require('../../utils/default-base64')
+const defaultProfileImg = require('../../utils/default-profile-img')
 
 function sendDefaultImg (res) {
   res.writeHead(200, {
     'Content-Type': 'image/jpeg'
   })
-  res.end(defaultBase64)
+  res.end(defaultProfileImg)
 }
 
 function sendImgBinary (res, {contentType, data}) {
@@ -33,7 +33,6 @@ module.exports = (req, res) => {
       sendImgBinary(res, { contentType, data })
     })
     .catch(err => {
-      console.log(err.toString())
       sendDefaultImg(res)
     })
   }
