@@ -17,7 +17,8 @@
     "express": "^4.16.2",
     "formidable": "^1.1.1",
     "mongoose": "^5.0.2",
-    "morgan": "^1.9.0"
+    "morgan": "^1.9.0",
+    "pdfkit": "^0.8.3"
   },
   "devDependencies": {
     "nodemon": "^1.14.11"

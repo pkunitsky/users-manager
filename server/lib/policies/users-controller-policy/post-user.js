@@ -8,7 +8,7 @@ module.exports = (req, res, next) => {
 
   form.parse(req, (err, fields, files) => {
     req.body.fields = fields
-    req.body.files = files
+    req.body.file = files.file
     next()
   })
 }

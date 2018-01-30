@@ -1,3 +1,4 @@
+const fs = require('fs')
 const mongoose = require('mongoose')
 const User = mongoose.model('User')
 
@@ -5,9 +6,18 @@ const User = mongoose.model('User')
 
 module.exports = (req, res) => {
   // const newUser = new User(req.body.user)
+  const {file} = req.body
 
-  console.log('post-user.js:', req.body.files)
-  console.log('post-user.js:', typeof req.body.files)
+  const rs = fs.createReadStream(file.path)
+  
+
+  rs.pipe(ws)
+
+  fs.unlink(file.path, (err) => {
+    console.log(err.toString())
+  })
+
+  // const rs = fs.createReadStream()
 
   // new User({
   //   ...req.body.fields,
