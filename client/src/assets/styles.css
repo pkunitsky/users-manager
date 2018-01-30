@@ -25,5 +25,5 @@ input[type="file"]:focus {
   text-transform: capitalize !important
 }
 
-.fade-enter-active, .fade-leave-active { transition: 'opacity' 0.5s }
+.fade-enter-active, .fade-leave-active { transition: all 0.5s }
 .fade-enter, .fade-leave-to { opacity: 0 }

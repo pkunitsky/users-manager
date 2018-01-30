@@ -36,31 +36,33 @@
       </form>
     </div>
 
-    <div class="col-md-6 col-lg-4">
-      <div class="card mb-4">
-        <img class="card-img-top" id="img" :src="user.imgSrc">
-        <div class="card-body">
-          <h5 class="card-title capitalize" v-visible="user.fullName">{{ user.fullName || 'default' }}</h5>
-          <small class="text-muted" v-visible="user.job">{{ user.job || 'default' }}</small>
+    <transition name="fade">
+      <div class="col-md-6 col-lg-4" v-if="fullName || msg.success">
+        <div class="card mb-4">
+          <img class="card-img-top" id="img" :src="user.imgSrc">
+          <div class="card-body">
+            <h5 class="card-title capitalize" v-visible="fullName">{{ fullName }}</h5>
+            <small class="text-muted" v-visible="user.job">{{ user.job || 'default' }}</small>
+          </div>
         </div>
+        <transition name="fade">
+          <div v-if="msg.error" ref="error" class="alert alert-danger">
+            {{ msg.error }}
+            <button class="close" @click="msg.error = null">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </transition>
+        <transition name="fade">
+          <div v-if="msg.success" ref="success" class="alert alert-success">
+              {{ msg.success }}
+            <button class="close" @click="onSuccessClose">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        </transition>
       </div>
-      <transition name="fade">
-        <div v-if="msg.error" ref="error" class="alert alert-danger">
-          {{ msg.error }}
-          <button class="close" @click="msg.error = null">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      </transition>
-      <transition name="fade">
-        <div v-if="msg.success" ref="success" class="alert alert-success">
-            {{ msg.success }}
-          <button class="close" @click="msg.success = null">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-      </transition>
-    </div>
+    </transition>
   </div>
 </template>
 
@@ -68,12 +70,6 @@
   import axios from 'axios'
 
   let formData = null
-
-  function getFullName (firstName, lastName) {
-    return firstName && lastName
-      ? (firstName+' '+lastName).toLowerCase()
-      : null
-  }
 
   export default {
     data: () => ({
@@ -102,6 +98,13 @@
           ? (this.newUser.firstName+' '+this.newUser.lastName).toLowerCase()
           : null
       },
+
+      fullName () {
+        const {firstName, lastName} = this.newUser
+        return firstName && lastName
+          ? firstName+' '+lastName
+          : null
+      }
     },
 
     methods: {
@@ -134,14 +137,13 @@
             this.requestPending = false
             this.msg.success = success
 
-            this.user.fullName = getFullName(user.firstName, user.lastName)
             this.user.job = user.job
-            this.user.imgSrc = `${process.env.API}/users/${this.user._id}/img`
+            this.user.imgSrc = `${process.env.API}/users/${user._id}/img`
 
             this.$store.commit('addUser', user)
 
-            // Object.keys(this.newUser).forEach(key => this.newUser[key] = null)
-            // document.querySelector('#file').value = null
+            Object.keys(this.newUser).forEach(key => this.newUser[key] = null)
+            document.querySelector('#file').value = null
           })
           .catch(err => {
             this.requestPending = false
@@ -151,6 +153,14 @@
               this.msg.error = err.toString()
             }
           })
+      },
+
+      onSuccessClose () {
+        this.msg.success = null
+        Object.keys(this.user).forEach(prop => {
+          this.user[prop] = null
+        })
+        this.user.imgSrc = `${process.env.API}/users/0/img`
       }
     }
   }

@@ -29,16 +29,16 @@ class PDF {
       })
     
       // define document
-      doc.font(path.join(__dirname, './fonts/segoeui.ttf'))
-        .fontSize(16)
-        .text(this.fullName)
-        .text(this.job)
-        .text(this.about)
       doc.image(this.imgBuff, {
         fit: [250, 300],
         align: 'center',
         valign: 'center'
       })
+      doc.font(path.join(__dirname, './fonts/segoeui.ttf'))
+        .fontSize(16)
+        .text(this.fullName)
+        .text(this.job)
+        .text(this.about)
       doc.end()
     })
   }

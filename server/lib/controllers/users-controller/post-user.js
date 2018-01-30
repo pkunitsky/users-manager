@@ -64,6 +64,7 @@ module.exports = (req, res) => {
           res.status(201).json({
             success: 'User successfully added',
             user: {
+              _id: user._id,
               firstName: user.firstName,
               lastName: user.lastName,
               job: user.job
