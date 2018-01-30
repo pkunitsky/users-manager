@@ -11,13 +11,14 @@
     </form>
 
     <div class="grid" v-if="users.length !== 0">
-      <div class="grid__item" v-for="user in users">
+      <div class="grid__item" v-for="user in users" :key="user._id">
         <div class="card">
           <img class="card-img-top" :src="user.imgBase64 || imgPlaceholder">
           <div class="card-body">
             <h5 class="card-title capitalize">{{ user.firstName+' '+user.lastName }}</h5>
             <small class="text-muted">{{ user.job }}</small>
             <div class="card-text">
+              <a class="text-danger" href="#" @click.prevent="deleteUser(user._id)">delete</a>
               <a href="#" target="_blank"><small>click to view pdf</small></a>
             </div>
           </div>
@@ -34,7 +35,7 @@
 </template>
 
 <script>
-  import UsersService from '@/services/users-service'
+  import {mapActions} from 'vuex'
 
   export default {
     data: () => ({
@@ -52,12 +53,15 @@
       }
     },
     methods: {
+      ...mapActions([
+        'getUsers', 'deleteUser'
+      ]),
       onSubmit () {
         console.log(this.searchTerm)
       }
     },
     created () {
-      this.$store.dispatch('getUsers')
+      this.getUsers()
     }
   }
 </script>

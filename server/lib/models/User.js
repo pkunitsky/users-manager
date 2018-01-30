@@ -13,13 +13,16 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  about: {
+    type: String
+  },
+  
   img: {
-    type: Buffer,
+    data: Buffer,
     contentType: String,
   },
-
   pdf: {
-    type: Buffer,
+    data: Buffer,
     contentType: String
   }
 })

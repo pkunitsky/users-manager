@@ -8,5 +8,14 @@ export default {
     } catch (err) {
       console.log(err.toString())
     }
+  },
+
+  async deleteUser ({ commit }, userID) {
+    try {
+      await UsersService.deleteUser(userID)
+      commit('deleteUser', userID)
+    } catch (err) {
+      console.log(err.toString())
+    }
   }
 }

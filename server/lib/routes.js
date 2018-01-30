@@ -1,6 +1,8 @@
 const UsersController = require('./controllers/users-controller')
 const UsersControllerPolicy = require('./policies/users-controller-policy')
 
+const path = require('path')
+
 module.exports = app => {
   app.route('/api/users')
     .get(UsersController.getUsers)
@@ -14,10 +16,11 @@ module.exports = app => {
     .put(UsersController.putUser)
     .delete(UsersController.deleteUser)
 
-  app.route('/api/users/:userID/pdf')
-    .get(UsersController.getUserPdf)
+  app.get('/api/users/:userID/pdf', UsersController.getUserPdf)
+  app.get('/api/users/:userID/img', UsersController.getUserImg)
 
   app.get('*', (req, res) => {
-    res.sendFile('index.html')
+    res.send({msg: 'oh hi mark'})
+    // res.sendFile(path.join(__dirname, '../../client/dist/index.html'))
   })
 }

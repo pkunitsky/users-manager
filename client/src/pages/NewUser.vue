@@ -38,8 +38,7 @@
 
     <div class="col-md-6 col-lg-4">
       <div class="card mb-4">
-        <img
-          class="card-img-top" :src="user.imgBase64 || imgPlaceholder">
+        <img class="card-img-top" id="img" :src="user.imgSrc">
         <div class="card-body">
           <h5 class="card-title capitalize" v-visible="user.fullName">{{ user.fullName || 'default' }}</h5>
           <small class="text-muted" v-visible="user.job">{{ user.job || 'default' }}</small>
@@ -56,7 +55,7 @@
       <transition name="fade">
         <div v-show="msg.success" class="alert alert-success">
             {{ msg.success }}
-          <button class="close" @click="msg.success = user.fullName = user.job = user.imgBase64 = null">
+          <button class="close" @click="onSuccessClose">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -85,16 +84,16 @@
         about: null,
       },
       user: {
+        _id: 1,
         fullName: null,
         job: null,
-        img: null,
+        imgSrc: `${process.env.API}/users/0/img`,
       },
       msg: {
         error: null,
         success: null
       },
       requestPending: false,
-      imgPlaceholder: 'http://www.planystech.com/wp-content/uploads/2017/03/profile-placeholder.jpg'
     }),
 
     computed: {
@@ -102,7 +101,7 @@
         return this.newUser.firstName && this.newUser.lastName
           ? (this.newUser.firstName+' '+this.newUser.lastName).toLowerCase()
           : null
-      }
+      },
     },
 
     methods: {
@@ -130,17 +129,16 @@
             }
           })
           .then(res => {
-            console.log(res)
-            // const {success, user} = res.data
+            const {success, user} = res.data
 
-            // this.requestPending = false
-            // this.msg.success = success
+            this.requestPending = false
+            this.msg.success = success
 
-            // this.user.fullName = getFullName(user.firstName, user.lastName)
-            // this.user.job = user.job
-            // this.user.img = user.img
+            this.user.fullName = getFullName(user.firstName, user.lastName)
+            this.user.job = user.job
+            this.user.imgSrc = `${process.env.API}/users/${this.user._id}/img`
 
-            // this.$store.commit('addUser', user)
+            this.$store.commit('addUser', user)
 
             // Object.keys(this.newUser).forEach(key => this.newUser[key] = null)
             // document.querySelector('#file').value = null
@@ -153,6 +151,13 @@
               this.msg.error = err.toString()
             }
           })
+      },
+
+      onSuccessClose () {
+        this.msg.success =  null
+        this.user.fullName = null
+        this.user.job = null
+        this.user.imgSrc = `${process.env.API}/users/0/img`
       }
     }
   }

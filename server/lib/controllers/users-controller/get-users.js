@@ -4,6 +4,10 @@ const User = mongoose.model('User')
 module.exports = (req, res) => {
   User
     .find({})
+    .select({
+      firstName: true,
+      lastName: true
+    })
     .then(users => {
       res.send(users)
     })
