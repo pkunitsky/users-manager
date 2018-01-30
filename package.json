@@ -4,9 +4,9 @@
   "description": "",
   "main": "lin/app.js",
   "scripts": {
-    "start": "node lib/app.js",
+    "start": "node server/lib/app.js",
     "seed": "node seed",
-    "dev": "nodemon lib/app.js"
+    "dev": "nodemon server/lib/app.js"
   },
   "author": "Paul Kunitsky",
   "license": "ISC",
