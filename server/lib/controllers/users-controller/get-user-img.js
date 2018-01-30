@@ -9,6 +9,13 @@ function sendDefaultImg (res) {
   res.end(defaultBase64)
 }
 
+function sendImgBinary (res, {contentType, data}) {
+  res.writeHead(200, {
+    'Content-Type': contentType
+  })
+  res.end(data, 'binary')
+}
+
 module.exports = (req, res) => {
   const {userID} = req.params
   User
@@ -19,9 +26,14 @@ module.exports = (req, res) => {
     .then(user => {
       if (!user.img) {
         sendDefaultImg(res)
+        return
       }
+
+      const {contentType, data} = user.img
+      sendImgBinary(res, { contentType, data })
     })
     .catch(err => {
+      console.log(err.toString())
       sendDefaultImg(res)
     })
   }

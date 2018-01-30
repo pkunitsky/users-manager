@@ -7,13 +7,12 @@
           <i class="fa fa-search"></i>
         </span>
       </div>
-      <span v-if="msg.value" :style="'color: '+msg.color">{{ msg }}</span>
     </form>
 
     <div class="grid" v-if="users.length !== 0">
       <div class="grid__item" v-for="user in users" :key="user._id">
         <div class="card">
-          <img class="card-img-top" :src="user.imgBase64 || imgPlaceholder">
+          <img class="card-img-top" :src="API+`/users/${user._id}/img`">
           <div class="card-body">
             <h5 class="card-title capitalize">{{ user.firstName+' '+user.lastName }}</h5>
             <small class="text-muted">{{ user.job }}</small>
@@ -27,7 +26,7 @@
     </div>
 
     <!-- loading -->
-
+    
     <div v-else class="text-center">
       No Users
     </div>
@@ -40,12 +39,9 @@
   export default {
     data: () => ({
       searchTerm: null,
-      msg: {
-        value: null,
-        color: null
-      },
+      msg: null,
       requestPending: false,
-      imgPlaceholder: 'http://www.planystech.com/wp-content/uploads/2017/03/profile-placeholder.jpg'
+      API: process.env.API
     }),
     computed: {
       users () {

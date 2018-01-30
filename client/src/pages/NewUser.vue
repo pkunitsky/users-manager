@@ -45,7 +45,7 @@
         </div>
       </div>
       <transition name="fade">
-        <div v-show="msg.error" class="alert alert-danger">
+        <div v-if="msg.error" ref="error" class="alert alert-danger">
           {{ msg.error }}
           <button class="close" @click="msg.error = null">
             <span aria-hidden="true">&times;</span>
@@ -53,9 +53,9 @@
         </div>
       </transition>
       <transition name="fade">
-        <div v-show="msg.success" class="alert alert-success">
+        <div v-if="msg.success" ref="success" class="alert alert-success">
             {{ msg.success }}
-          <button class="close" @click="onSuccessClose">
+          <button class="close" @click="msg.success = null">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -151,13 +151,6 @@
               this.msg.error = err.toString()
             }
           })
-      },
-
-      onSuccessClose () {
-        this.msg.success =  null
-        this.user.fullName = null
-        this.user.job = null
-        this.user.imgSrc = `${process.env.API}/users/0/img`
       }
     }
   }
