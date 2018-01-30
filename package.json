@@ -2,12 +2,12 @@
   "name": "users-manager",
   "version": "1.0.0",
   "description": "",
-  "main": "lin/app.js",
+  "main": "server/app.js",
   "scripts": {
-    "start": "node lib/app.js",
+    "start": "node server/app.js",
     "seed": "node seed",
-    "dev": "nodemon lib/app.js",
-    "test_prod": "node lib/tests/production-mode-test/index.js"
+    "dev": "nodemon server/app.js",
+    "test_prod": "node server/tests/production-mode-test/index.js"
   },
   "author": "Paul Kunitsky",
   "license": "ISC",
