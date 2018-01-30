@@ -4,9 +4,10 @@
   "description": "",
   "main": "lin/app.js",
   "scripts": {
-    "start": "node server/lib/app.js",
+    "start": "node lib/app.js",
     "seed": "node seed",
-    "dev": "nodemon server/lib/app.js"
+    "dev": "nodemon lib/app.js",
+    "test_prod": "node lib/tests/production-mode-test/index.js"
   },
   "author": "Paul Kunitsky",
   "license": "ISC",
@@ -14,6 +15,7 @@
     "bluebird": "^3.5.1",
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
+    "dotenv": "^5.0.0",
     "express": "^4.16.2",
     "formidable": "^1.1.1",
     "mongodb": "^3.0.2",
